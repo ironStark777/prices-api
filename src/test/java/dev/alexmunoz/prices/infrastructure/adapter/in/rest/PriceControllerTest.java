@@ -3,7 +3,7 @@ package dev.alexmunoz.prices.infrastructure.adapter.in.rest;
 import dev.alexmunoz.prices.application.port.in.GetApplicablePriceQuery;
 import dev.alexmunoz.prices.application.port.in.GetApplicablePriceUseCase;
 import dev.alexmunoz.prices.domain.PriceMother;
-import dev.alexmunoz.prices.domain.exception.PriceNotFoundException;
+import dev.alexmunoz.prices.application.exception.PriceNotFoundException;
 import dev.alexmunoz.prices.domain.model.BrandId;
 import dev.alexmunoz.prices.domain.model.ProductId;
 import org.junit.jupiter.api.Test;

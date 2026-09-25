@@ -1,6 +1,6 @@
 package dev.alexmunoz.prices.application.port.in;
 
-import dev.alexmunoz.prices.domain.exception.PriceNotFoundException;
+import dev.alexmunoz.prices.application.exception.PriceNotFoundException;
 import dev.alexmunoz.prices.domain.model.Price;
 
 /**

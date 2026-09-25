@@ -1,6 +1,6 @@
 package dev.alexmunoz.prices.infrastructure.adapter.in.rest;
 
-import dev.alexmunoz.prices.domain.exception.PriceNotFoundException;
+import dev.alexmunoz.prices.application.exception.PriceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;

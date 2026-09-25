@@ -14,7 +14,7 @@ import java.util.Optional;
  * <ol>
  *     <li>Only prices valid at the application date are considered.</li>
  *     <li>The highest {@code priority} wins.</li>
- *     <li>On a priority tie, the most recently started price wins, then the highest price list,
+ *     <li>On a priority tie case, the most recently started price wins, then the highest price list,
  *     so the result is always deterministic.</li>
  * </ol>
  */

@@ -143,12 +143,12 @@ flowchart LR
 src/main/java/dev/alexmunoz/prices
 ├── domain                       # Pure Java: no framework dependencies
 │   ├── model                    # Price (aggregate); Money, BrandId, ProductId (value objects)
-│   ├── service                  # PriceSelectionPolicy (business rule)
-│   └── exception                # PriceNotFoundException
+│   └── service                  # PriceSelectionPolicy (business rule)
 ├── application                  # Pure Java: orchestrates the domain
 │   ├── port/in                  # GetApplicablePriceUseCase + GetApplicablePriceQuery (inbound port)
 │   ├── port/out                 # PriceRepository (outbound port)
-│   └── service                  # GetApplicablePriceService (use case implementation)
+│   ├── service                  # GetApplicablePriceService (use case implementation)
+│   └── exception                # PriceNotFoundException
 └── infrastructure               # Spring-dependent adapters
     ├── adapter/in/rest          # Controller, response DTO + mapper, error handling
     ├── adapter/out/persistence  # JPA entity, Spring Data repository, adapter + mapper

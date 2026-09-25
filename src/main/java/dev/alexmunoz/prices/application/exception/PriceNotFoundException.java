@@ -1,4 +1,4 @@
-package dev.alexmunoz.prices.domain.exception;
+package dev.alexmunoz.prices.application.exception;
 
 import dev.alexmunoz.prices.domain.model.BrandId;
 import dev.alexmunoz.prices.domain.model.ProductId;
