@@ -65,6 +65,8 @@ curl "http://localhost:8080/api/v1/prices?applicationDate=2020-06-14T16:00:00&pr
 }
 ```
 
+[`requests.http`](requests.http) contains the five required scenarios and the error cases, ready to run from the IntelliJ HTTP client.
+
 Other URLs while the application is running:
 
 | URL                                     | What it is                                                              |

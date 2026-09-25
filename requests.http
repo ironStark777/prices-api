@@ -1,0 +1,36 @@
+### Prices API - manual requests
+### Run the app first: ./mvnw spring-boot:run
+### In IntelliJ, click the green arrow next to each request (or "Run All").
+
+@host = http://localhost:8080
+@path = /api/v1/prices
+
+### Test 1: day 14 at 10:00 -> price list 1, 35.50 EUR
+GET {{host}}{{path}}?applicationDate=2020-06-14T10:00:00&productId=35455&brandId=1
+
+### Test 2: day 14 at 16:00 -> price list 2, 25.45 EUR
+GET {{host}}{{path}}?applicationDate=2020-06-14T16:00:00&productId=35455&brandId=1
+
+### Test 3: day 14 at 21:00 -> price list 1, 35.50 EUR
+GET {{host}}{{path}}?applicationDate=2020-06-14T21:00:00&productId=35455&brandId=1
+
+### Test 4: day 15 at 10:00 -> price list 3, 30.50 EUR
+GET {{host}}{{path}}?applicationDate=2020-06-15T10:00:00&productId=35455&brandId=1
+
+### Test 5: day 16 at 21:00 -> price list 4, 38.95 EUR
+GET {{host}}{{path}}?applicationDate=2020-06-16T21:00:00&productId=35455&brandId=1
+
+### 404: no price applies before 2020-06-14
+GET {{host}}{{path}}?applicationDate=2019-01-01T00:00:00&productId=35455&brandId=1
+
+### 404: unknown product
+GET {{host}}{{path}}?applicationDate=2020-06-14T10:00:00&productId=1&brandId=1
+
+### 400: missing brandId
+GET {{host}}{{path}}?applicationDate=2020-06-14T10:00:00&productId=35455
+
+### 400: malformed date
+GET {{host}}{{path}}?applicationDate=14/06/2020&productId=35455&brandId=1
+
+### 400: non-positive id
+GET {{host}}{{path}}?applicationDate=2020-06-14T10:00:00&productId=-1&brandId=1
