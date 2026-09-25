@@ -12,9 +12,6 @@ spring:
   sql:
     init:
       mode: embedded
-  h2:
-    console:
-      enabled: true
 
 springdoc:
   swagger-ui:

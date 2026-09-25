@@ -40,6 +40,9 @@ Several price lists can overlap in time. When more than one applies, the one wit
 
 # Start the application on http://localhost:8080
 ./mvnw spring-boot:run
+
+# Same, with the dev profile (enables the H2 console)
+./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
 On Windows, use `mvnw.cmd` instead of `./mvnw`.
@@ -68,7 +71,7 @@ Other URLs while the application is running:
 |-----------------------------------------|-------------------------------------------------------------------------|
 | http://localhost:8080/swagger-ui.html   | Swagger UI to try the endpoint from the browser                         |
 | http://localhost:8080/v3/api-docs       | OpenAPI specification (JSON)                                            |
-| http://localhost:8080/h2-console        | H2 console (JDBC URL `jdbc:h2:mem:pricesdb`, user `sa`, empty password) |
+| http://localhost:8080/h2-console        | H2 console, `dev` profile only (JDBC URL `jdbc:h2:mem:pricesdb`, user `sa`, empty password) |
 
 ## API
 
@@ -231,6 +234,7 @@ GitHub Actions runs `mvn verify` on Java 21 on every push and pull request (`.gi
 - **Validation at two levels.** `@Positive` on the request parameters returns a clear `400` to the client. The `BrandId` and `ProductId` value objects enforce the same invariant inside the domain, whatever the entry point.
 - **`GET` with query parameters.** The operation is a safe, idempotent and cacheable read.
 - **URI versioning (`/api/v1`)** leaves room for future changes to the contract.
+- **H2 console only in the `dev` profile.** It exposes the database over HTTP, so it is off by default and only enabled explicitly for local development.
 - **SQL scripts rather than Hibernate DDL** (`ddl-auto: none`). The schema is explicit and reviewable.
 
 ## Possible improvements
