@@ -176,7 +176,7 @@ return candidates.stream()
 2. The highest `priority` wins.
 3. The specification doesn't cover ties on priority. In that case the price that started most recently wins, then the higher price list. That way the result never depends on the order the rows come back in.
 
-The repository does the coarse filtering in SQL: brand, product and date range, backed by a composite index. The domain policy makes the final choice. That keeps the business rule in the domain, where it's unit-tested without a database.
+The responsibilities don't overlap. The repository only loads the price lists of the requested product and brand, and the domain decides which one applies at the date. The whole business rule (validity period, priority, tie-breaking) lives in one place and is unit-tested without a database.
 
 ## Data model
 
@@ -185,7 +185,7 @@ The repository does the coarse filtering in SQL: brand, product and date range, 
 - a surrogate `ID` primary key
 - the `LAST_UPDATE` and `LAST_UPDATE_BY` audit columns from the sample dataset
 - a `CHECK (END_DATE >= START_DATE)` constraint
-- an index on `(BRAND_ID, PRODUCT_ID, START_DATE, END_DATE)`
+- an index on `(BRAND_ID, PRODUCT_ID)`, the lookup key of the repository
 
 | BRAND_ID | START_DATE          | END_DATE            | PRICE_LIST | PRODUCT_ID | PRIORITY | PRICE | CURR |
 |----------|---------------------|---------------------|------------|------------|----------|-------|------|
@@ -227,6 +227,7 @@ GitHub Actions runs `mvn verify` on Java 21 on every push and pull request (`.gi
 
 - **`LocalDateTime` rather than a zoned type.** The source data has no time zone, so the API takes and returns local date-times. A multi-region deployment would move to `OffsetDateTime` or `Instant`, with the zone stored alongside each price.
 - **Inclusive end date.** This matches the sample data (`23:59:59`). A half-open interval `[start, end)` would handle sub-second requests at the boundary more cleanly. That would change the data contract, though, so it was left as specified.
+- **Date filtering in the domain, not in SQL.** A product has only a few price lists per brand, so loading all of them is cheap and keeps the rule in a single place instead of splitting it between the query and the domain. If a product had a long price history, the query could also filter by date range and the policy would stay unchanged.
 - **Validation at two levels.** `@Positive` on the request parameters returns a clear `400` to the client. The `BrandId` and `ProductId` value objects enforce the same invariant inside the domain, whatever the entry point.
 - **`GET` with query parameters.** The operation is a safe, idempotent and cacheable read.
 - **URI versioning (`/api/v1`)** leaves room for future changes to the contract.

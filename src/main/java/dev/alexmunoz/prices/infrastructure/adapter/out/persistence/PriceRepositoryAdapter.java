@@ -7,7 +7,6 @@ import dev.alexmunoz.prices.application.port.out.PriceRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -24,8 +23,8 @@ class PriceRepositoryAdapter implements PriceRepository {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Price> findApplicablePrices(BrandId brandId, ProductId productId, LocalDateTime applicationDate) {
-        return repository.findApplicable(brandId.value(), productId.value(), applicationDate).stream()
+    public List<Price> findByBrandAndProduct(BrandId brandId, ProductId productId) {
+        return repository.findByBrandIdAndProductId(brandId.value(), productId.value()).stream()
                 .map(PriceEntityMapper::toDomain)
                 .toList();
     }

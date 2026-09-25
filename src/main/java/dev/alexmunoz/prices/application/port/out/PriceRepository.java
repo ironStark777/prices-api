@@ -4,7 +4,6 @@ import dev.alexmunoz.prices.domain.model.BrandId;
 import dev.alexmunoz.prices.domain.model.Price;
 import dev.alexmunoz.prices.domain.model.ProductId;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -13,8 +12,8 @@ import java.util.List;
 public interface PriceRepository {
 
     /**
-     * Returns the candidate prices of a product for a brand whose validity period
-     * contains the given date. The result may contain several overlapping prices.
+     * Returns every price list defined for a product of a brand, whatever its validity period.
+     * Choosing the one that applies at a given date is a domain decision.
      */
-    List<Price> findApplicablePrices(BrandId brandId, ProductId productId, LocalDateTime applicationDate);
+    List<Price> findByBrandAndProduct(BrandId brandId, ProductId productId);
 }

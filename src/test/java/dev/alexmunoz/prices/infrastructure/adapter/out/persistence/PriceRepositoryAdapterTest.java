@@ -24,19 +24,16 @@ class PriceRepositoryAdapterTest {
     private PriceRepositoryAdapter adapter;
 
     @Test
-    void returnsEveryPriceWhoseValidityPeriodContainsTheDate() {
-        var prices = adapter.findApplicablePrices(BRAND, PRODUCT, LocalDateTime.parse("2020-06-14T16:00:00"));
-
-        assertThat(prices)
+    void returnsEveryPriceListOfTheProductForTheBrand() {
+        assertThat(adapter.findByBrandAndProduct(BRAND, PRODUCT))
                 .extracting(Price::priceList)
-                .containsExactlyInAnyOrder(1, 2);
+                .containsExactlyInAnyOrder(1, 2, 3, 4);
     }
 
     @Test
     void mapsEveryColumnToTheDomainModel() {
-        var prices = adapter.findApplicablePrices(BRAND, PRODUCT, LocalDateTime.parse("2020-06-15T10:00:00"));
-
-        assertThat(prices).filteredOn(price -> price.priceList() == 3)
+        assertThat(adapter.findByBrandAndProduct(BRAND, PRODUCT))
+                .filteredOn(price -> price.priceList() == 3)
                 .singleElement()
                 .satisfies(price -> {
                     assertThat(price.brandId()).isEqualTo(BRAND);
@@ -50,17 +47,8 @@ class PriceRepositoryAdapterTest {
     }
 
     @Test
-    void includesPricesStartingOrEndingExactlyAtTheDate() {
-        assertThat(adapter.findApplicablePrices(BRAND, PRODUCT, LocalDateTime.parse("2020-06-14T18:30:00")))
-                .extracting(Price::priceList)
-                .contains(2);
-    }
-
-    @Test
     void returnsNothingForUnknownProductOrBrand() {
-        var at = LocalDateTime.parse("2020-06-14T10:00:00");
-
-        assertThat(adapter.findApplicablePrices(BRAND, new ProductId(99999L), at)).isEmpty();
-        assertThat(adapter.findApplicablePrices(new BrandId(2L), PRODUCT, at)).isEmpty();
+        assertThat(adapter.findByBrandAndProduct(BRAND, new ProductId(99999L))).isEmpty();
+        assertThat(adapter.findByBrandAndProduct(new BrandId(2L), PRODUCT)).isEmpty();
     }
 }
