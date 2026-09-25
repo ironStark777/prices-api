@@ -95,12 +95,12 @@ flowchart LR
     subgraph application
         inport{{GetApplicablePriceUseCase}}
         service[GetApplicablePriceService]
+        outport{{PriceRepository}}
     end
 
     subgraph domain
         model[Price / Money]
         policy[PriceSelectionPolicy]
-        outport{{PriceRepository}}
     end
 
     rest --> inport
@@ -116,10 +116,10 @@ src/main/java/dev/alexmunoz/prices
 ├── domain                      # Pure Java: no framework dependencies
 │   ├── model                   # Price (aggregate), Money (value object)
 │   ├── service                 # PriceSelectionPolicy (business rule)
-│   ├── port                    # PriceRepository (outbound port)
 │   └── exception               # PriceNotFoundException
 ├── application                 # Pure Java: orchestrates the domain
 │   ├── port/in                 # GetApplicablePriceUseCase + query (inbound port)
+│   ├── port/out                # PriceRepository (outbound port)
 │   └── service                 # GetApplicablePriceService
 └── infrastructure              # Spring-dependent adapters
     ├── adapter/in/rest         # Controller, response DTO, error handling

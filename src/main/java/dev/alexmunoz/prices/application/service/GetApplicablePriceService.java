@@ -4,7 +4,7 @@ import dev.alexmunoz.prices.application.port.in.GetApplicablePriceQuery;
 import dev.alexmunoz.prices.application.port.in.GetApplicablePriceUseCase;
 import dev.alexmunoz.prices.domain.exception.PriceNotFoundException;
 import dev.alexmunoz.prices.domain.model.Price;
-import dev.alexmunoz.prices.domain.port.PriceRepository;
+import dev.alexmunoz.prices.application.port.out.PriceRepository;
 import dev.alexmunoz.prices.domain.service.PriceSelectionPolicy;
 
 import java.util.Objects;

@@ -2,7 +2,7 @@ package dev.alexmunoz.prices.infrastructure.config;
 
 import dev.alexmunoz.prices.application.port.in.GetApplicablePriceUseCase;
 import dev.alexmunoz.prices.application.service.GetApplicablePriceService;
-import dev.alexmunoz.prices.domain.port.PriceRepository;
+import dev.alexmunoz.prices.application.port.out.PriceRepository;
 import dev.alexmunoz.prices.domain.service.PriceSelectionPolicy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,7 +1,7 @@
 package dev.alexmunoz.prices.infrastructure.adapter.out.persistence;
 
 import dev.alexmunoz.prices.domain.model.Price;
-import dev.alexmunoz.prices.domain.port.PriceRepository;
+import dev.alexmunoz.prices.application.port.out.PriceRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 

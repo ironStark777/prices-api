@@ -1,4 +1,4 @@
-package dev.alexmunoz.prices.domain.port;
+package dev.alexmunoz.prices.application.port.out;
 
 import dev.alexmunoz.prices.domain.model.Price;
 
