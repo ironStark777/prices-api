@@ -46,6 +46,6 @@ class PriceController {
             @Parameter(description = "Brand identifier", example = "1")
             @RequestParam @Positive Long brandId) {
         var query = new GetApplicablePriceQuery(new BrandId(brandId), new ProductId(productId), applicationDate);
-        return PriceResponse.from(getApplicablePriceUseCase.getApplicablePrice(query));
+        return PriceResponseMapper.toResponse(getApplicablePriceUseCase.getApplicablePrice(query));
     }
 }

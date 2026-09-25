@@ -122,7 +122,7 @@ src/main/java/dev/alexmunoz/prices
 │   ├── port/out                # PriceRepository (outbound port)
 │   └── service                 # GetApplicablePriceService
 └── infrastructure              # Spring-dependent adapters
-    ├── adapter/in/rest         # Controller, response DTO, error handling
+    ├── adapter/in/rest         # Controller, response DTO + mapper, error handling
     ├── adapter/out/persistence # JPA entity, Spring Data repository, adapter, mapper
     └── config                  # Bean wiring for the domain/application classes
 ```

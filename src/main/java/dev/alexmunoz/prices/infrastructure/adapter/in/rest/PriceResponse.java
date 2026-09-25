@@ -1,6 +1,5 @@
 package dev.alexmunoz.prices.infrastructure.adapter.in.rest;
 
-import dev.alexmunoz.prices.domain.model.Price;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.math.BigDecimal;
@@ -15,15 +14,4 @@ public record PriceResponse(
         @Schema(example = "2020-06-14T18:30:00") LocalDateTime endDate,
         @Schema(description = "Final selling price", example = "25.45") BigDecimal price,
         @Schema(description = "ISO-4217 currency code", example = "EUR") String currency) {
-
-    static PriceResponse from(Price price) {
-        return new PriceResponse(
-                price.productId().value(),
-                price.brandId().value(),
-                price.priceList(),
-                price.startDate(),
-                price.endDate(),
-                price.finalPrice().amount(),
-                price.finalPrice().currency().getCurrencyCode());
-    }
 }
