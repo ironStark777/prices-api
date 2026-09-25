@@ -1,5 +1,8 @@
 package dev.alexmunoz.prices.domain.exception;
 
+import dev.alexmunoz.prices.domain.model.BrandId;
+import dev.alexmunoz.prices.domain.model.ProductId;
+
 import java.time.LocalDateTime;
 
 /**
@@ -7,8 +10,8 @@ import java.time.LocalDateTime;
  */
 public class PriceNotFoundException extends RuntimeException {
 
-    public PriceNotFoundException(long brandId, long productId, LocalDateTime applicationDate) {
+    public PriceNotFoundException(BrandId brandId, ProductId productId, LocalDateTime applicationDate) {
         super("No applicable price found for brandId=%d, productId=%d at %s"
-                .formatted(brandId, productId, applicationDate));
+                .formatted(brandId.value(), productId.value(), applicationDate));
     }
 }

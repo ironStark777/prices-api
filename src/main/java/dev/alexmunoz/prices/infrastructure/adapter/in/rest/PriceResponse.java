@@ -18,8 +18,8 @@ public record PriceResponse(
 
     static PriceResponse from(Price price) {
         return new PriceResponse(
-                price.productId(),
-                price.brandId(),
+                price.productId().value(),
+                price.brandId().value(),
                 price.priceList(),
                 price.startDate(),
                 price.endDate(),

@@ -4,6 +4,8 @@ import dev.alexmunoz.prices.application.port.in.GetApplicablePriceQuery;
 import dev.alexmunoz.prices.application.port.in.GetApplicablePriceUseCase;
 import dev.alexmunoz.prices.domain.PriceMother;
 import dev.alexmunoz.prices.domain.exception.PriceNotFoundException;
+import dev.alexmunoz.prices.domain.model.BrandId;
+import dev.alexmunoz.prices.domain.model.ProductId;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -35,7 +37,7 @@ class PriceControllerTest {
 
     @Test
     void mapsTheUseCaseResultToTheResponse() throws Exception {
-        given(useCase.getApplicablePrice(new GetApplicablePriceQuery(1L, 35455L, AT)))
+        given(useCase.getApplicablePrice(new GetApplicablePriceQuery(new BrandId(1L), new ProductId(35455L), AT)))
                 .willReturn(PriceMother.afternoonPromotion());
 
         mockMvc.perform(get(URL)
@@ -55,7 +57,7 @@ class PriceControllerTest {
     @Test
     void returns404ProblemDetailWhenNoPriceApplies() throws Exception {
         given(useCase.getApplicablePrice(any()))
-                .willThrow(new PriceNotFoundException(1L, 35455L, AT));
+                .willThrow(new PriceNotFoundException(new BrandId(1L), new ProductId(35455L), AT));
 
         mockMvc.perform(get(URL)
                         .param("applicationDate", "2020-06-14T16:00:00")

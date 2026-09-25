@@ -1,7 +1,9 @@
 package dev.alexmunoz.prices.domain;
 
+import dev.alexmunoz.prices.domain.model.BrandId;
 import dev.alexmunoz.prices.domain.model.Money;
 import dev.alexmunoz.prices.domain.model.Price;
+import dev.alexmunoz.prices.domain.model.ProductId;
 
 import java.time.LocalDateTime;
 
@@ -10,8 +12,8 @@ import java.time.LocalDateTime;
  */
 public final class PriceMother {
 
-    public static final long BRAND_ID = 1L;
-    public static final long PRODUCT_ID = 35455L;
+    public static final BrandId BRAND_ID = new BrandId(1L);
+    public static final ProductId PRODUCT_ID = new ProductId(35455L);
 
     private PriceMother() {
     }

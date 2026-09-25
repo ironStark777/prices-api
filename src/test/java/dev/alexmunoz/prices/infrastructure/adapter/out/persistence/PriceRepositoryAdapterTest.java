@@ -1,6 +1,8 @@
 package dev.alexmunoz.prices.infrastructure.adapter.out.persistence;
 
+import dev.alexmunoz.prices.domain.model.BrandId;
 import dev.alexmunoz.prices.domain.model.Price;
+import dev.alexmunoz.prices.domain.model.ProductId;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -15,12 +17,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Import(PriceRepositoryAdapter.class)
 class PriceRepositoryAdapterTest {
 
+    private static final BrandId BRAND = new BrandId(1L);
+    private static final ProductId PRODUCT = new ProductId(35455L);
+
     @Autowired
     private PriceRepositoryAdapter adapter;
 
     @Test
     void returnsEveryPriceWhoseValidityPeriodContainsTheDate() {
-        var prices = adapter.findApplicablePrices(1L, 35455L, LocalDateTime.parse("2020-06-14T16:00:00"));
+        var prices = adapter.findApplicablePrices(BRAND, PRODUCT, LocalDateTime.parse("2020-06-14T16:00:00"));
 
         assertThat(prices)
                 .extracting(Price::priceList)
@@ -29,13 +34,13 @@ class PriceRepositoryAdapterTest {
 
     @Test
     void mapsEveryColumnToTheDomainModel() {
-        var prices = adapter.findApplicablePrices(1L, 35455L, LocalDateTime.parse("2020-06-15T10:00:00"));
+        var prices = adapter.findApplicablePrices(BRAND, PRODUCT, LocalDateTime.parse("2020-06-15T10:00:00"));
 
         assertThat(prices).filteredOn(price -> price.priceList() == 3)
                 .singleElement()
                 .satisfies(price -> {
-                    assertThat(price.brandId()).isEqualTo(1L);
-                    assertThat(price.productId()).isEqualTo(35455L);
+                    assertThat(price.brandId()).isEqualTo(BRAND);
+                    assertThat(price.productId()).isEqualTo(PRODUCT);
                     assertThat(price.priority()).isEqualTo(1);
                     assertThat(price.startDate()).isEqualTo(LocalDateTime.parse("2020-06-15T00:00:00"));
                     assertThat(price.endDate()).isEqualTo(LocalDateTime.parse("2020-06-15T11:00:00"));
@@ -46,7 +51,7 @@ class PriceRepositoryAdapterTest {
 
     @Test
     void includesPricesStartingOrEndingExactlyAtTheDate() {
-        assertThat(adapter.findApplicablePrices(1L, 35455L, LocalDateTime.parse("2020-06-14T18:30:00")))
+        assertThat(adapter.findApplicablePrices(BRAND, PRODUCT, LocalDateTime.parse("2020-06-14T18:30:00")))
                 .extracting(Price::priceList)
                 .contains(2);
     }
@@ -55,7 +60,7 @@ class PriceRepositoryAdapterTest {
     void returnsNothingForUnknownProductOrBrand() {
         var at = LocalDateTime.parse("2020-06-14T10:00:00");
 
-        assertThat(adapter.findApplicablePrices(1L, 99999L, at)).isEmpty();
-        assertThat(adapter.findApplicablePrices(2L, 35455L, at)).isEmpty();
+        assertThat(adapter.findApplicablePrices(BRAND, new ProductId(99999L), at)).isEmpty();
+        assertThat(adapter.findApplicablePrices(new BrandId(2L), PRODUCT, at)).isEmpty();
     }
 }

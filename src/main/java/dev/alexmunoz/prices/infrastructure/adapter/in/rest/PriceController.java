@@ -2,6 +2,8 @@ package dev.alexmunoz.prices.infrastructure.adapter.in.rest;
 
 import dev.alexmunoz.prices.application.port.in.GetApplicablePriceQuery;
 import dev.alexmunoz.prices.application.port.in.GetApplicablePriceUseCase;
+import dev.alexmunoz.prices.domain.model.BrandId;
+import dev.alexmunoz.prices.domain.model.ProductId;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -43,7 +45,7 @@ class PriceController {
             @RequestParam @Positive Long productId,
             @Parameter(description = "Brand identifier", example = "1")
             @RequestParam @Positive Long brandId) {
-        var query = new GetApplicablePriceQuery(brandId, productId, applicationDate);
+        var query = new GetApplicablePriceQuery(new BrandId(brandId), new ProductId(productId), applicationDate);
         return PriceResponse.from(getApplicablePriceUseCase.getApplicablePrice(query));
     }
 }

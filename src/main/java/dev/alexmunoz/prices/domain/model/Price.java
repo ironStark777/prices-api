@@ -9,8 +9,8 @@ import java.util.Objects;
  * <p>When several prices overlap in time, the one with the highest {@code priority} wins.
  */
 public record Price(
-        long brandId,
-        long productId,
+        BrandId brandId,
+        ProductId productId,
         int priceList,
         int priority,
         LocalDateTime startDate,
@@ -18,6 +18,8 @@ public record Price(
         Money finalPrice) {
 
     public Price {
+        Objects.requireNonNull(brandId, "brandId must not be null");
+        Objects.requireNonNull(productId, "productId must not be null");
         Objects.requireNonNull(startDate, "startDate must not be null");
         Objects.requireNonNull(endDate, "endDate must not be null");
         Objects.requireNonNull(finalPrice, "finalPrice must not be null");

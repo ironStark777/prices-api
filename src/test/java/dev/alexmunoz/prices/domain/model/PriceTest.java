@@ -39,6 +39,6 @@ class PriceTest {
     void rejectsMissingFinalPrice() {
         var start = LocalDateTime.parse("2020-06-14T00:00:00");
         assertThatNullPointerException()
-                .isThrownBy(() -> new Price(1L, 1L, 1, 0, start, start, null));
+                .isThrownBy(() -> new Price(new BrandId(1L), new ProductId(1L), 1, 0, start, start, null));
     }
 }

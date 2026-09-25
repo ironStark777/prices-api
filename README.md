@@ -114,7 +114,7 @@ flowchart LR
 ```
 src/main/java/dev/alexmunoz/prices
 ├── domain                      # Pure Java: no framework dependencies
-│   ├── model                   # Price (aggregate), Money (value object)
+│   ├── model                   # Price (aggregate); Money, BrandId, ProductId (value objects)
 │   ├── service                 # PriceSelectionPolicy (business rule)
 │   └── exception               # PriceNotFoundException
 ├── application                 # Pure Java: orchestrates the domain
@@ -171,7 +171,7 @@ mvn verify
 
 | Test class                        | Layer          | What it covers                                                   |
 |-----------------------------------|----------------|------------------------------------------------------------------|
-| `PriceTest`, `MoneyTest`          | Domain         | Invariants and inclusive validity bounds                         |
+| `PriceTest`, `MoneyTest`, `IdentifierTest` | Domain | Invariants, identifiers and inclusive validity bounds    |
 | `PriceSelectionPolicyTest`        | Domain         | The stream algorithm: priority, ties, ordering, empty/null input |
 | `GetApplicablePriceServiceTest`   | Application    | Use case orchestration with a mocked repository port             |
 | `PriceRepositoryAdapterTest`      | Infrastructure | JPA query and entity-to-domain mapping on H2 (`@DataJpaTest`)    |
