@@ -38,34 +38,24 @@ class GetApplicablePriceServiceTest {
 
     @Test
     void returnsTheHighestPriorityPriceAmongCandidates() {
-        given(priceRepository.findByBrandAndProduct(BRAND_ID, PRODUCT_ID))
+        given(priceRepository.findApplicable(BRAND_ID, PRODUCT_ID, AT))
                 .willReturn(List.of(PriceMother.basePrice(), PriceMother.afternoonPromotion()));
 
         var price = service.getApplicablePrice(new GetApplicablePriceQuery(BRAND_ID, PRODUCT_ID, AT));
 
         assertThat(price).isEqualTo(PriceMother.afternoonPromotion());
-        then(priceRepository).should().findByBrandAndProduct(BRAND_ID, PRODUCT_ID);
+        then(priceRepository).should().findApplicable(BRAND_ID, PRODUCT_ID, AT);
     }
 
     @Test
-    void throwsPriceNotFoundWhenThereAreNoCandidates() {
-        given(priceRepository.findByBrandAndProduct(BRAND_ID, PRODUCT_ID)).willReturn(List.of());
+    void throwsPriceNotFoundWhenNoPriceIsApplicable() {
+        given(priceRepository.findApplicable(BRAND_ID, PRODUCT_ID, AT)).willReturn(List.of());
         var query = new GetApplicablePriceQuery(BRAND_ID, PRODUCT_ID, AT);
 
         assertThatThrownBy(() -> service.getApplicablePrice(query))
                 .isInstanceOf(PriceNotFoundException.class)
                 .hasMessageContaining("brandId=1")
                 .hasMessageContaining("productId=35455");
-    }
-
-    @Test
-    void throwsPriceNotFoundWhenNoCandidateIsValidAtTheDate() {
-        given(priceRepository.findByBrandAndProduct(BRAND_ID, PRODUCT_ID))
-                .willReturn(List.of(PriceMother.afternoonPromotion()));
-        var query = new GetApplicablePriceQuery(BRAND_ID, PRODUCT_ID, LocalDateTime.parse("2020-06-14T10:00:00"));
-
-        assertThatThrownBy(() -> service.getApplicablePrice(query))
-                .isInstanceOf(PriceNotFoundException.class);
     }
 
     @Test

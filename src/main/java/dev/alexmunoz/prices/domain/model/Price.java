@@ -27,12 +27,4 @@ public record Price(
             throw new IllegalArgumentException("endDate must not be before startDate");
         }
     }
-
-    /**
-     * Whether this price applies at the given instant. Both bounds are inclusive.
-     */
-    public boolean isApplicableAt(LocalDateTime applicationDate) {
-        Objects.requireNonNull(applicationDate, "applicationDate must not be null");
-        return !applicationDate.isBefore(startDate) && !applicationDate.isAfter(endDate);
-    }
 }

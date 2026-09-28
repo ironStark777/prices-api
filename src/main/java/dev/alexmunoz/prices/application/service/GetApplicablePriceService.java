@@ -26,8 +26,8 @@ public class GetApplicablePriceService implements GetApplicablePriceUseCase {
     @Override
     public Price getApplicablePrice(GetApplicablePriceQuery query) {
         Objects.requireNonNull(query, "query must not be null");
-        var candidates = priceRepository.findByBrandAndProduct(query.brandId(), query.productId());
-        return selectionPolicy.select(candidates, query.applicationDate())
+        var candidates = priceRepository.findApplicable(query.brandId(), query.productId(), query.applicationDate());
+        return selectionPolicy.select(candidates)
                 .orElseThrow(() -> new PriceNotFoundException(
                         query.brandId(), query.productId(), query.applicationDate()));
     }
