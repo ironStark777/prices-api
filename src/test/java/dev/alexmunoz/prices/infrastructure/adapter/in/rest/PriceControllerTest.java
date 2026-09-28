@@ -75,7 +75,10 @@ class PriceControllerTest {
                         .param("applicationDate", "2020-06-14T16:00:00")
                         .param("productId", "35455"))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().contentType("application/problem+json"));
+                .andExpect(content().contentType("application/problem+json"))
+                .andExpect(jsonPath("$.title").value("Invalid request"))
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.detail").value("Required parameter 'brandId' is missing"));
 
         then(useCase).should(never()).getApplicablePrice(any());
     }
@@ -86,7 +89,25 @@ class PriceControllerTest {
                         .param("applicationDate", "14/06/2020 16:00")
                         .param("productId", "35455")
                         .param("brandId", "1"))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType("application/problem+json"))
+                .andExpect(jsonPath("$.title").value("Invalid request"))
+                .andExpect(jsonPath("$.detail")
+                        .value("Parameter 'applicationDate' has an invalid value '14/06/2020 16:00'"));
+
+        then(useCase).should(never()).getApplicablePrice(any());
+    }
+
+    @Test
+    void returns400WhenAnIdentifierIsNotANumber() throws Exception {
+        mockMvc.perform(get(URL)
+                        .param("applicationDate", "2020-06-14T16:00:00")
+                        .param("productId", "abc")
+                        .param("brandId", "1"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType("application/problem+json"))
+                .andExpect(jsonPath("$.title").value("Invalid request"))
+                .andExpect(jsonPath("$.detail").value("Parameter 'productId' has an invalid value 'abc'"));
 
         then(useCase).should(never()).getApplicablePrice(any());
     }
@@ -97,7 +118,10 @@ class PriceControllerTest {
                         .param("applicationDate", "2020-06-14T16:00:00")
                         .param("productId", "-1")
                         .param("brandId", "1"))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType("application/problem+json"))
+                .andExpect(jsonPath("$.title").value("Invalid request"))
+                .andExpect(jsonPath("$.detail").value("productId must be greater than 0"));
 
         then(useCase).should(never()).getApplicablePrice(any());
     }

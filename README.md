@@ -93,7 +93,7 @@ Returns the price of a product for a brand at the given date.
 | `400`  | Missing, malformed or non-positive parameter, returned as `application/problem+json`        |
 | `404`  | No price applies to that product and brand at that date, returned as `application/problem+json` |
 
-Example error response:
+Example `404` response:
 
 ```json
 {
@@ -101,6 +101,18 @@ Example error response:
   "title": "Price not found",
   "status": 404,
   "detail": "No applicable price found for brandId=1, productId=35455 at 2019-01-01T00:00",
+  "instance": "/api/v1/prices"
+}
+```
+
+Example `400` response (`productId=-1`). Missing and malformed parameters use the same shape, and the `detail` names the parameter:
+
+```json
+{
+  "type": "about:blank",
+  "title": "Invalid request",
+  "status": 400,
+  "detail": "productId must be greater than 0",
   "instance": "/api/v1/prices"
 }
 ```
